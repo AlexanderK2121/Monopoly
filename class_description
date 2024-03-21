@@ -1,0 +1,1 @@
+There will be a team class, which will have attributes such as manager, wins, losses, draws, league, standing_in_league, it will also have a method to add players to it. An inheritance for this class could be national team.
