@@ -32,39 +32,50 @@ public class FootballManagerGame {
         return new Player(name, skillLevel, position);
     }
 
+    private static Team createTeam() throws ValidationException {
+        Manager manager = createManager();
+        System.out.println("Enter Team Name:");
+        String teamName = scanner.nextLine();
+        Team team = new Team(teamName, manager);
+
+        while (true) {
+            System.out.println("Add a player to the team? (yes/no)");
+            String response = scanner.nextLine();
+            if ("no".equalsIgnoreCase(response)) {
+                break;
+            }
+
+            try {
+                Player player = createPlayer();
+                team.addPlayer(player);
+            } catch (ValidationException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        return team;
+    }
+
     public static void main(String[] args) {
         try {
-            Manager manager = createManager();
+            System.out.println("Creating Team 1:");
+            Team team1 = createTeam();
 
-            System.out.println("Enter Team Name:");
-            String teamName = scanner.nextLine();
-            Team team = new Team(teamName, manager);
+            System.out.println("Creating Team 2:");
+            Team team2 = createTeam();
 
-            while (true) {
-                System.out.println("Add a player to the team? (yes/no)");
-                String response = scanner.nextLine();
-                if ("no".equalsIgnoreCase(response)) {
-                    break;
-                }
-
-                try {
-                    Player player = createPlayer();
-                    team.addPlayer(player);
-                } catch (ValidationException e) {
-                    System.out.println(e.getMessage());
-                }
-            }
-
-            System.out.println("Team Created Successfully!");
-            System.out.println("Team Name: " + team.getTeamName());
-            System.out.println("Manager: " + team.getManager().getName());
-            for (Player player : team.getPlayers()) {
-                System.out.println("Player: " + player.getName() + " | Position: " + player.getPosition() + " | Skill Level: " + player.getSkillLevel());
+            System.out.println("Teams have been created. Would you like to simulate a match between them? (yes/no)");
+            String answer = scanner.nextLine();
+            if ("yes".equalsIgnoreCase(answer)) {
+                String matchResult = Match.simulateMatch(team1, team2);
+                System.out.println(matchResult);
             }
         } catch (NumberFormatException e) {
-            System.out.println("Please enter a valid number.");
+            System.out.println("Invalid input! Please enter a valid number.");
         } catch (ValidationException e) {
             System.out.println(e.getMessage());
+        } finally {
+            scanner.close();
         }
     }
 }

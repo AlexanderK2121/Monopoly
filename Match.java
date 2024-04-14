@@ -1,7 +1,6 @@
 import java.util.Random;
 
 
-// NOT UTILIZED YET
 public class Match {
     public static String simulateMatch(Team team1, Team team2) {
         int team1Score = calculateScore(team1);
